@@ -10,8 +10,8 @@
           "completedAt": "2026-07-17T10:48:31.987Z"
         },
         "sun": {
-          "done": false,
-          "completedAt": null
+          "done": true,
+          "completedAt": "2026-07-17T10:48:43.451Z"
         },
         "mon": {
           "done": false,
@@ -36,5 +36,5 @@
       }
     }
   ],
-  "updatedAt": "2026-07-17T10:48:32.891Z"
+  "updatedAt": "2026-07-17T10:48:44.362Z"
 }
