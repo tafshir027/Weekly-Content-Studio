@@ -18,8 +18,8 @@
           "completedAt": "2026-07-17T10:48:44.706Z"
         },
         "tue": {
-          "done": false,
-          "completedAt": null
+          "done": true,
+          "completedAt": "2026-07-17T10:48:45.818Z"
         },
         "wed": {
           "done": false,
@@ -36,5 +36,5 @@
       }
     }
   ],
-  "updatedAt": "2026-07-17T10:48:45.609Z"
+  "updatedAt": "2026-07-17T10:48:47.683Z"
 }
