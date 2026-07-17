@@ -6,8 +6,8 @@
       "createdAt": "2026-07-17T06:43:26.290Z",
       "days": {
         "sat": {
-          "done": true,
-          "completedAt": "2026-07-17T06:43:52.450Z"
+          "done": false,
+          "completedAt": null
         },
         "sun": {
           "done": false,
@@ -36,5 +36,5 @@
       }
     }
   ],
-  "updatedAt": "2026-07-17T06:43:53.356Z"
+  "updatedAt": "2026-07-17T06:43:54.753Z"
 }
