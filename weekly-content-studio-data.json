@@ -30,11 +30,11 @@
           "completedAt": "2026-07-17T10:48:59.282Z"
         },
         "fri": {
-          "done": false,
-          "completedAt": null
+          "done": true,
+          "completedAt": "2026-07-17T10:49:02.882Z"
         }
       }
     }
   ],
-  "updatedAt": "2026-07-17T10:49:00.186Z"
+  "updatedAt": "2026-07-17T10:49:03.796Z"
 }
