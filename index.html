@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Content Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root{
+    --bg:#0a0e1a;
+    --bg-glow-1: rgba(139,124,255,0.25);
+    --bg-glow-2: rgba(34,211,238,0.18);
+    --glass-bg: rgba(255,255,255,0.055);
+    --glass-bg-strong: rgba(255,255,255,0.09);
+    --glass-border: rgba(255,255,255,0.14);
+    --text-primary:#f1f3fb;
+    --text-secondary:#a3aac2;
+    --text-dim:#6b7290;
+    --accent:#8b7cff;
+    --accent-2:#22d3ee;
+    --accent-warm:#ff9f6b;
+    --success:#4ade80;
+    --success-bg: rgba(74,222,128,0.12);
+    --danger:#f87171;
+    --shadow: 0 8px 32px rgba(0,0,0,0.35);
+    --radius-lg:22px;
+    --radius-md:14px;
+    --radius-sm:9px;
+  }
+  [data-theme="light"]{
+    --bg:#eef1f8;
+    --bg-glow-1: rgba(109,92,255,0.18);
+    --bg-glow-2: rgba(14,165,196,0.14);
+    --glass-bg: rgba(255,255,255,0.55);
+    --glass-bg-strong: rgba(255,255,255,0.75);
+    --glass-border: rgba(255,255,255,0.9);
+    --text-primary:#1b2140;
+    --text-secondary:#565d80;
+    --text-dim:#8b90ac;
+    --accent:#6d5cff;
+    --accent-2:#0ea5c4;
+    --accent-warm:#e8813f;
+    --success:#1fa15a;
+    --success-bg: rgba(31,161,90,0.12);
+    --danger:#e0504a;
+    --shadow: 0 8px 32px rgba(60,70,120,0.12);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:'Inter',sans-serif;
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(circle at 12% 8%, var(--bg-glow-1), transparent 45%),
+      radial-gradient(circle at 88% 15%, var(--bg-glow-2), transparent 40%);
+    background-repeat: no-repeat;
+    background-size: 100% 100vh;
+    background-position: top left;
+    color:var(--text-primary);
+    min-height:100vh;
+    padding:32px 20px 80px;
+    transition:background-color .4s ease, color .4s ease;
+  }
+  .wrap{max-width:1180px; margin:0 auto;}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;}
+
+  /* ---------- header ---------- */
+  header{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:30px; flex-wrap:wrap; gap:16px;
+  }
+  .brand{display:flex; align-items:center; gap:14px;}
+  .brand .mark{
+    width:46px; height:46px; border-radius:14px;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    display:flex; align-items:center; justify-content:center;
+    font-size:20px; color:#fff; box-shadow: var(--shadow);
+    flex-shrink:0;
+  }
+  .brand h1{font-size:22px; font-weight:700; letter-spacing:-.02em;}
+  .brand p{font-size:12.5px; color:var(--text-secondary); margin-top:2px;}
+  .header-actions{display:flex; align-items:center; gap:10px;}
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:11px 18px; border-radius:12px; border:1px solid var(--glass-border);
+    background:var(--glass-bg); color:var(--text-primary);
+    font-family:'Inter',sans-serif; font-weight:600; font-size:13.5px;
+    cursor:pointer; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    transition: transform .15s ease, background .2s ease, box-shadow .2s ease;
+  }
+  .btn:hover{ transform: translateY(-1px); box-shadow: var(--shadow); }
+  .btn:active{ transform: translateY(0); }
+  .btn-primary{
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    border:none; color:#fff;
+  }
+  .btn-icon{
+    width:42px; height:42px; padding:0; justify-content:center; border-radius:12px;
+  }
+  .btn-danger-ghost{ color:var(--danger); }
+
+  /* ---------- glass card base ---------- */
+  .glass{
+    background:var(--glass-bg);
+    border:1px solid var(--glass-border);
+    border-radius:var(--radius-lg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--shadow);
+  }
+
+  /* ---------- layout: selector + stats ---------- */
+  .top-grid{
+    display:grid; grid-template-columns: 1.55fr 1fr; gap:20px; margin-bottom:22px;
+  }
+  @media (max-width:860px){ .top-grid{ grid-template-columns:1fr; } }
+
+  .selector-card{ padding:22px 24px; }
+  .selector-card .row-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; }
+  .eyebrow{ font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--text-dim); font-weight:600; margin-bottom:8px;}
+  select#taskSelect{
+    width:100%; margin-top:14px; padding:12px 14px; border-radius:12px;
+    border:1px solid var(--glass-border); background:var(--glass-bg-strong);
+    color:var(--text-primary); font-family:'Inter'; font-size:14.5px; font-weight:600;
+    appearance:none; cursor:pointer;
+  }
+  .task-meta{ display:flex; gap:18px; margin-top:16px; flex-wrap:wrap; }
+  .task-meta .m{ font-size:12.5px; color:var(--text-secondary); }
+  .task-meta .m b{ color:var(--text-primary); font-weight:700; }
+  .status-pill{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:5px 12px; border-radius:999px; font-size:11.5px; font-weight:700;
+    letter-spacing:.03em;
+  }
+  .status-pill.notstarted{ background:rgba(163,170,194,0.15); color:var(--text-secondary); }
+  .status-pill.progress{ background:rgba(255,159,107,0.15); color:var(--accent-warm); }
+  .status-pill.done{ background:var(--success-bg); color:var(--success); }
+
+  .donut-card{ padding:22px 24px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;}
+  .donut-wrap{ position:relative; width:150px; height:150px; margin:6px 0 4px;}
+  .donut-center{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+  }
+  .donut-center .pct{ font-family:'Space Grotesk'; font-size:26px; font-weight:700; }
+  .donut-center .lbl{ font-size:10.5px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.08em; margin-top:2px;}
+
+  /* ---------- day cards ---------- */
+  .section-title{ display:flex; align-items:center; justify-content:space-between; margin:8px 0 14px; }
+  .section-title h2{ font-size:16px; font-weight:600; }
+  .section-title .hint{ font-size:12px; color:var(--text-dim); }
+
+  .days-grid{
+    display:grid; grid-template-columns: repeat(7, 1fr); gap:12px; margin-bottom:28px;
+  }
+  @media (max-width:980px){ .days-grid{ grid-template-columns: repeat(4,1fr); } }
+  @media (max-width:620px){ .days-grid{ grid-template-columns: repeat(2,1fr); } }
+
+  .day-card{
+    padding:16px 12px 14px; text-align:center; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    transition: transform .15s ease, border-color .2s ease;
+    position:relative;
+  }
+  .day-card:hover{ transform: translateY(-3px); }
+  .day-card.done{ border-color: var(--success); }
+  .day-card .day-name{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--text-dim); font-weight:700;}
+  .day-card .day-icon{
+    width:38px; height:38px; border-radius:11px; display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); color:#fff; font-size:15px;
+    opacity:.55; transition:opacity .2s ease;
+  }
+  .day-card.done .day-icon{ opacity:1; }
+  .day-card .task-label{ font-size:12.5px; font-weight:600; line-height:1.25; min-height:32px; }
+  .reel-check{
+    width:30px; height:30px; border-radius:50%;
+    border:2.5px dashed var(--text-dim);
+    display:flex; align-items:center; justify-content:center;
+    color:transparent; font-size:13px; transition:all .2s ease;
+  }
+  .day-card.done .reel-check{
+    border:2.5px solid var(--success); background:var(--success-bg); color:var(--success);
+  }
+  .day-card .day-date{ font-size:10px; color:var(--text-dim); min-height:12px; }
+
+  /* ---------- table ---------- */
+  .table-card{ padding:22px 24px; overflow:hidden; margin-bottom:50px; }
+  .table-scroll{ overflow-x:auto; margin-top:14px; }
+  table{ width:100%; border-collapse:collapse; min-width:820px; }
+  thead th{
+    text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.07em;
+    color:var(--text-dim); font-weight:700; padding:0 10px 10px; border-bottom:1px solid var(--glass-border);
+  }
+  thead th.center, tbody td.center{ text-align:center; }
+  tbody td{ padding:12px 10px; border-bottom:1px solid var(--glass-border); font-size:13px; vertical-align:middle;}
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr:hover{ background:var(--glass-bg-strong); }
+  .cell-name{ font-weight:700; }
+  .cell-created{ color:var(--text-secondary); font-size:12px; }
+  .day-cell{ display:flex; flex-direction:column; align-items:center; gap:2px; font-size:10.5px; color:var(--text-dim);}
+  .day-cell i{ font-size:13px; }
+  .day-cell.done i{ color:var(--success); }
+  .day-cell.pending i{ color:var(--text-dim); opacity:.4; }
+  .row-actions{ display:flex; gap:6px; justify-content:center; }
+
+  /* ---------- responsive card view (table -> cards) ---------- */
+  @media (max-width:880px){
+    .table-scroll{ overflow-x:visible; margin-top:16px; }
+    table{ min-width:0; }
+    thead{ display:none; }
+    tbody, tr, td{ display:block; width:100%; }
+    tbody tr{
+      margin-bottom:16px; border-radius:var(--radius-md); border:1px solid var(--glass-border);
+      background:var(--glass-bg); padding:14px 16px 6px; overflow:hidden;
+    }
+    tbody tr:hover{ background:var(--glass-bg); }
+    tbody tr:last-child{ margin-bottom:0; }
+    tbody td{ border-bottom:1px solid var(--glass-border); padding:10px 0; }
+    tbody td:last-child{ border-bottom:none; padding-bottom:12px; }
+    tbody td.cell-name{ font-size:15px; padding-top:0; border-bottom:1px solid var(--glass-border); }
+    tbody td.cell-created{
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    tbody td.cell-created::before{ content:'Created'; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); font-weight:700; }
+    tbody td[data-daylabel]{
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    tbody td[data-daylabel]::before{
+      content: attr(data-daylabel); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em;
+      color:var(--text-dim); font-weight:700;
+    }
+    .day-cell{ flex-direction:row; gap:8px; font-size:12px; }
+    tbody td.center{ text-align:left; }
+    tbody td[data-statuslabel]{ display:flex; justify-content:space-between; align-items:center; }
+    tbody td[data-statuslabel]::before{ content:'Status'; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); font-weight:700; }
+    .row-actions{ justify-content:flex-end; }
+  }
+  @media (max-width:420px){
+    body{ padding:24px 12px 60px; }
+    .brand h1{ font-size:19px; }
+  }
+
+  .site-footer{
+    text-align:center; padding-top:22px; margin-top:4px;
+    border-top:1px solid var(--glass-border);
+    font-size:12px; color:var(--text-dim); letter-spacing:.02em;
+	padding-bottom: 20px;
+  }
+  .site-footer i{ color:var(--accent); margin:0 6px; font-size:9px; vertical-align:middle; }
+  .icon-btn{
+    width:30px; height:30px; border-radius:9px; border:1px solid var(--glass-border);
+    background:var(--glass-bg); color:var(--text-secondary); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:12px; transition:.15s ease;
+  }
+  .icon-btn:hover{ color:var(--danger); border-color:var(--danger); }
+  .icon-btn.edit-btn:hover{ color:var(--accent); border-color:var(--accent); }
+
+  /* ---------- sync status ---------- */
+  .sync-pill{
+    display:inline-flex; align-items:center; gap:7px;
+    padding:8px 14px; border-radius:12px; font-size:12px; font-weight:600;
+    border:1px solid var(--glass-border); background:var(--glass-bg); color:var(--text-secondary);
+    backdrop-filter: blur(16px); cursor:pointer;
+  }
+  .sync-pill i{ font-size:11px; }
+  .sync-pill.synced{ color:var(--success); }
+  .sync-pill.syncing i{ animation: spin 1s linear infinite; }
+  .sync-pill.error{ color:var(--danger); }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+
+  .modal.wide{ max-width:440px; }
+  .field-label{ font-size:12px; font-weight:600; color:var(--text-secondary); margin:14px 0 6px; display:block; }
+  .field-label:first-of-type{ margin-top:0; }
+  .field-hint{ font-size:11px; color:var(--text-dim); margin-top:6px; line-height:1.5; }
+  .gh-connected-box{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:12px 14px; border-radius:12px; background:var(--success-bg); border:1px solid var(--success);
+    margin-bottom:16px; font-size:13px; color:var(--success); font-weight:600;
+  }
+  .empty-state{ text-align:center; padding:50px 20px; color:var(--text-dim); }
+  .empty-state i{ font-size:34px; margin-bottom:12px; opacity:.5; }
+  .empty-state p{ font-size:13.5px; }
+
+  /* ---------- modal ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(5,7,15,0.55); backdrop-filter: blur(6px);
+    display:none; align-items:center; justify-content:center; z-index:100; padding:20px;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal{
+    width:100%; max-width:420px; padding:28px; border-radius:var(--radius-lg);
+  }
+  .modal h3{ font-size:18px; margin-bottom:6px; }
+  .modal p.sub{ font-size:13px; color:var(--text-secondary); margin-bottom:18px; }
+  .modal input{
+    width:100%; padding:13px 14px; border-radius:12px; border:1px solid var(--glass-border);
+    background:var(--glass-bg-strong); color:var(--text-primary); font-family:'Inter'; font-size:14px;
+  }
+  .modal input:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .modal-actions{ display:flex; gap:10px; margin-top:20px; justify-content:flex-end; }
+
+  ::-webkit-scrollbar{ height:8px; width:8px; }
+  ::-webkit-scrollbar-thumb{ background:var(--glass-border); border-radius:8px; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; }
+  }
+</style>
+</head>
+<body data-theme="dark">
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="mark"><i class="fa-solid fa-clapperboard"></i></div>
+      <div>
+        <h1>Weekly Content Studio</h1>
+        <p>Script → Voice → Edit → Design → Upload, tracked every week</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="sync-pill offline" id="syncStatus" title="GitHub sync settings"><i class="fa-brands fa-github"></i><span id="syncStatusText">Offline</span></span>
+      <button class="btn btn-icon" id="themeToggle" title="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+      <button class="btn btn-primary" id="addTaskBtn"><i class="fa-solid fa-plus"></i> New Video Task</button>
+    </div>
+  </header>
+
+  <div class="top-grid">
+    <div class="selector-card glass">
+      <div class="row-top">
+        <div style="flex:1; min-width:200px;">
+          <div class="eyebrow">Active Video Task</div>
+          <select id="taskSelect"></select>
+        </div>
+        <span class="status-pill notstarted" id="statusPill">Not Started</span>
+      </div>
+      <div class="task-meta">
+        <div class="m">Created <b id="metaCreated">—</b></div>
+        <div class="m">Days Done <b id="metaDone">0/7</b></div>
+        <div class="m">Completed <b id="metaCompleted">—</b></div>
+      </div>
+    </div>
+
+    <div class="donut-card glass">
+      <div class="eyebrow">Weekly Progress</div>
+      <div class="donut-wrap">
+        <svg viewBox="0 0 150 150" width="150" height="150">
+          <circle cx="75" cy="75" r="62" fill="none" stroke-width="14" style="stroke:var(--glass-border)"/>
+          <circle id="donutRing" cx="75" cy="75" r="62" fill="none" stroke-width="14" stroke-linecap="round"
+            transform="rotate(-90 75 75)" style="stroke:url(#donutGrad); transition: stroke-dasharray .6s ease;"/>
+          <defs>
+            <linearGradient id="donutGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="var(--accent)"/>
+              <stop offset="100%" stop-color="var(--accent-2)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="donut-center">
+          <div class="pct" id="donutPct">0%</div>
+          <div class="lbl">Complete</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h2><i class="fa-solid fa-list-check" style="margin-right:8px; color:var(--accent);"></i>Daily Checklist</h2>
+    <span class="hint">Tap a day to check / uncheck</span>
+  </div>
+  <div class="days-grid" id="daysGrid"></div>
+
+  <div class="table-card glass">
+    <div class="section-title" style="margin-top:0;">
+      <h2><i class="fa-solid fa-table-list" style="margin-right:8px; color:var(--accent-2);"></i>All Video Tasks</h2>
+    </div>
+    <div class="table-scroll">
+      <table id="tasksTable">
+        <thead>
+          <tr>
+            <th>Video Title</th>
+            <th>Created</th>
+            <th class="center">Sat<br><span style="font-weight:400;">Script</span></th>
+            <th class="center">Sun<br><span style="font-weight:400;">Voice</span></th>
+            <th class="center">Mon<br><span style="font-weight:400;">Edit</span></th>
+            <th class="center">Tue<br><span style="font-weight:400;">Edit</span></th>
+            <th class="center">Wed<br><span style="font-weight:400;">Info</span></th>
+            <th class="center">Thu<br><span style="font-weight:400;">Thumb</span></th>
+            <th class="center">Fri<br><span style="font-weight:400;">Upload</span></th>
+            <th class="center">Status</th>
+            <th class="center">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tasksTbody"></tbody>
+      </table>
+    </div>
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <i class="fa-solid fa-film"></i>
+      <p>No video tasks yet. Click "New Video Task" to start your first weekly cycle.</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <i class="fa-solid fa-circle"></i>All copyright reserved Tafsir Kabir Khan 2026<i class="fa-solid fa-circle"></i>
+  </footer>
+
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal glass">
+    <h3 id="taskModalTitle">New Video Task</h3>
+    <p class="sub" id="taskModalSub">Enter the video title. The full Sat–Fri checklist is generated automatically.</p>
+    <input type="text" id="newTaskInput" placeholder="e.g. How to Edit Reels in CapCut" maxlength="120">
+    <div class="modal-actions">
+      <button class="btn" id="cancelModal">Cancel</button>
+      <button class="btn btn-primary" id="confirmAdd"><i class="fa-solid fa-check"></i> <span id="confirmAddLabel">Create Task</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="githubOverlay">
+  <div class="modal wide glass">
+    <h3><i class="fa-brands fa-github" style="margin-right:8px;"></i>GitHub Sync</h3>
+    <p class="sub">Sync your tasks across devices via a GitHub repo. Data is stored as one JSON file using the GitHub Contents API.</p>
+
+    <div id="ghConnectedBox" class="gh-connected-box" style="display:none;">
+      <span><i class="fa-solid fa-circle-check" style="margin-right:6px;"></i>Connected to <span id="ghConnectedRepo"></span></span>
+      <button class="btn" id="ghDisconnectBtn" style="padding:6px 12px; font-size:12px;">Disconnect</button>
+    </div>
+
+    <label class="field-label">GitHub Username</label>
+    <input type="text" id="ghUsername" placeholder="e.g. tafsir-dev">
+
+    <label class="field-label">Repository Name</label>
+    <input type="text" id="ghRepo" placeholder="e.g. content-studio-data">
+
+    <label class="field-label">File Name</label>
+    <input type="text" id="ghFilename" placeholder="weekly-content-studio-data.json" value="weekly-content-studio-data.json">
+
+    <label class="field-label">Personal Access Token</label>
+    <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxx">
+    <div class="field-hint">Classic PAT needs <b>repo</b> scope, or a fine-grained token with Contents read/write access on this repository. The token is stored only in this browser's local storage — never synced.</div>
+
+    <div class="modal-actions">
+      <button class="btn" id="cancelGithub">Close</button>
+      <button class="btn btn-primary" id="connectGithubBtn"><i class="fa-solid fa-plug"></i> Connect &amp; Sync</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'wcs_tasks_v1';
+  const THEME_KEY = 'wcs_theme';
+  const SEL_KEY = 'wcs_selected';
+
+  const DAY_DEFS = [
+    { key:'sat', label:'Saturday', task:'Script Writing', icon:'fa-pen-nib' },
+    { key:'sun', label:'Sunday',   task:'Voice Over',      icon:'fa-microphone' },
+    { key:'mon', label:'Monday',   task:'Video Editing',   icon:'fa-film' },
+    { key:'tue', label:'Tuesday',  task:'Video Editing',   icon:'fa-film' },
+    { key:'wed', label:'Wednesday',task:'Infographic & Final Touch', icon:'fa-wand-magic-sparkles' },
+    { key:'thu', label:'Thursday', task:'Upload Prep & Thumbnail',   icon:'fa-image' },
+    { key:'fri', label:'Friday',   task:'Video Upload',    icon:'fa-cloud-arrow-up' },
+  ];
+
+  let tasks = [];
+  let selectedId = null;
+
+  function loadTasks(){
+    try{ tasks = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch(e){ tasks = []; }
+    selectedId = localStorage.getItem(SEL_KEY);
+  }
+  function saveTasks(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)); }
+  function saveSelected(){ if(selectedId) localStorage.setItem(SEL_KEY, selectedId); }
+
+  function makeDays(){
+    const days = {};
+    DAY_DEFS.forEach(d => { days[d.key] = { done:false, completedAt:null }; });
+    return days;
+  }
+
+  function addTask(title){
+    const t = {
+      id: 'task_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+      title: title.trim(),
+      createdAt: new Date().toISOString(),
+      days: makeDays()
+    };
+    tasks.unshift(t);
+    selectedId = t.id;
+    saveTasks(); saveSelected();
+    renderAll();
+    queueGithubPush();
+  }
+
+  function deleteTask(id){
+    tasks = tasks.filter(t => t.id !== id);
+    if(selectedId === id) selectedId = tasks.length ? tasks[0].id : null;
+    saveTasks(); saveSelected();
+    renderAll();
+    queueGithubPush();
+  }
+
+  function editTaskTitle(id, newTitle){
+    const t = tasks.find(x => x.id === id);
+    if(!t) return;
+    t.title = newTitle.trim();
+    saveTasks();
+    renderAll();
+    queueGithubPush();
+  }
+
+  function toggleDay(taskId, dayKey){
+    const t = tasks.find(x => x.id === taskId);
+    if(!t) return;
+    const d = t.days[dayKey];
+    d.done = !d.done;
+    d.completedAt = d.done ? new Date().toISOString() : null;
+    saveTasks();
+    renderAll();
+    queueGithubPush();
+  }
+
+  function doneCount(t){ return DAY_DEFS.filter(d => t.days[d.key].done).length; }
+  function taskStatus(t){
+    const c = doneCount(t);
+    if(c === 0) return 'notstarted';
+    if(c === 7) return 'done';
+    return 'progress';
+  }
+  function statusLabel(s){
+    return s === 'done' ? 'Completed' : s === 'progress' ? 'In Progress' : 'Not Started';
+  }
+  function fmtDate(iso){
+    if(!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+  }
+  function fmtShort(iso){
+    if(!iso) return '';
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+  }
+
+  // ---------- render: selector ----------
+  function renderSelector(){
+    const sel = document.getElementById('taskSelect');
+    sel.innerHTML = '';
+    if(tasks.length === 0){
+      sel.innerHTML = '<option>No tasks yet</option>';
+      sel.disabled = true;
+    }else{
+      sel.disabled = false;
+      tasks.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t.id;
+        opt.textContent = t.title;
+        sel.appendChild(opt);
+      });
+      if(!selectedId || !tasks.find(t => t.id === selectedId)) selectedId = tasks[0].id;
+      sel.value = selectedId;
+    }
+  }
+
+  function currentTask(){ return tasks.find(t => t.id === selectedId); }
+
+  // ---------- render: meta + donut ----------
+  function renderMeta(){
+    const t = currentTask();
+    const pill = document.getElementById('statusPill');
+    if(!t){
+      document.getElementById('metaCreated').textContent = '—';
+      document.getElementById('metaDone').textContent = '0/7';
+      document.getElementById('metaCompleted').textContent = '—';
+      pill.className = 'status-pill notstarted';
+      pill.textContent = 'Not Started';
+      setDonut(0);
+      return;
+    }
+    const c = doneCount(t);
+    const s = taskStatus(t);
+    document.getElementById('metaCreated').textContent = fmtDate(t.createdAt);
+    document.getElementById('metaDone').textContent = c + '/7';
+    document.getElementById('metaCompleted').textContent = c === 7 ? fmtDate(t.days.fri.completedAt) : '—';
+    pill.className = 'status-pill ' + s;
+    pill.textContent = statusLabel(s);
+    setDonut(Math.round((c/7)*100));
+  }
+
+  function setDonut(pct){
+    const ring = document.getElementById('donutRing');
+    const r = 62;
+    const circ = 2 * Math.PI * r;
+    const offset = circ - (pct/100) * circ;
+    ring.style.strokeDasharray = circ;
+    ring.style.strokeDashoffset = offset;
+    document.getElementById('donutPct').textContent = pct + '%';
+  }
+
+  // ---------- render: day cards ----------
+  function renderDays(){
+    const grid = document.getElementById('daysGrid');
+    grid.innerHTML = '';
+    const t = currentTask();
+    DAY_DEFS.forEach(d => {
+      const dayData = t ? t.days[d.key] : { done:false, completedAt:null };
+      const card = document.createElement('div');
+      card.className = 'day-card glass' + (dayData.done ? ' done' : '');
+      card.innerHTML = `
+        <div class="day-name">${d.label}</div>
+        <div class="day-icon"><i class="fa-solid ${d.icon}"></i></div>
+        <div class="task-label">${d.task}</div>
+        <div class="reel-check"><i class="fa-solid fa-check"></i></div>
+        <div class="day-date">${dayData.completedAt ? fmtShort(dayData.completedAt) : ''}</div>
+      `;
+      if(t){
+        card.addEventListener('click', () => toggleDay(t.id, d.key));
+      }else{
+        card.style.opacity = '.5'; card.style.cursor = 'default';
+      }
+      grid.appendChild(card);
+    });
+  }
+
+  // ---------- render: table ----------
+  function renderTable(){
+    const tbody = document.getElementById('tasksTbody');
+    const empty = document.getElementById('emptyState');
+    const tableEl = document.getElementById('tasksTable');
+    tbody.innerHTML = '';
+    if(tasks.length === 0){
+      tableEl.style.display = 'none';
+      empty.style.display = 'block';
+      return;
+    }
+    tableEl.style.display = 'table';
+    empty.style.display = 'none';
+
+    tasks.forEach(t => {
+      const tr = document.createElement('tr');
+      const s = taskStatus(t);
+      let dayCells = '';
+      DAY_DEFS.forEach(d => {
+        const dd = t.days[d.key];
+        dayCells += `<td class="center" data-daylabel="${d.label} · ${d.task}">
+          <div class="day-cell ${dd.done ? 'done' : 'pending'}">
+            <i class="fa-solid ${dd.done ? 'fa-circle-check' : 'fa-circle'}"></i>
+            <span>${dd.done ? fmtShort(dd.completedAt) : '—'}</span>
+          </div>
+        </td>`;
+      });
+      tr.innerHTML = `
+        <td class="cell-name">${escapeHtml(t.title)}</td>
+        <td class="cell-created">${fmtDate(t.createdAt)}</td>
+        ${dayCells}
+        <td class="center" data-statuslabel="Status"><span class="status-pill ${s}">${statusLabel(s)}</span></td>
+        <td class="center">
+          <div class="row-actions">
+            <button class="icon-btn" data-view="${t.id}" title="View checklist"><i class="fa-solid fa-eye"></i></button>
+            <button class="icon-btn edit-btn" data-edit="${t.id}" title="Rename task"><i class="fa-solid fa-pen"></i></button>
+            <button class="icon-btn" data-del="${t.id}" title="Delete task"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    tbody.querySelectorAll('[data-view]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectedId = btn.getAttribute('data-view');
+        saveSelected();
+        renderAll();
+        window.scrollTo({ top:0, behavior:'smooth' });
+      });
+    });
+    tbody.querySelectorAll('[data-edit]').forEach(btn => {
+      btn.addEventListener('click', () => openEditModal(btn.getAttribute('data-edit')));
+    });
+    tbody.querySelectorAll('[data-del]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-del');
+        const t = tasks.find(x => x.id === id);
+        if(confirm(`Delete "${t.title}"? This cannot be undone.`)) deleteTask(id);
+      });
+    });
+  }
+
+  function escapeHtml(s){
+    const div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  function renderAll(){
+    renderSelector();
+    renderMeta();
+    renderDays();
+    renderTable();
+  }
+
+  // ---------- theme ----------
+  function initTheme(){
+    const saved = localStorage.getItem(THEME_KEY) || 'dark';
+    document.body.setAttribute('data-theme', saved);
+    updateThemeIcon(saved);
+  }
+  function updateThemeIcon(theme){
+    const icon = document.querySelector('#themeToggle i');
+    icon.className = theme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+  }
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const cur = document.body.getAttribute('data-theme');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    document.body.setAttribute('data-theme', next);
+    localStorage.setItem(THEME_KEY, next);
+    updateThemeIcon(next);
+  });
+
+  // ---------- add / edit modal ----------
+  const overlay = document.getElementById('modalOverlay');
+  const input = document.getElementById('newTaskInput');
+  const modalTitle = document.getElementById('taskModalTitle');
+  const modalSub = document.getElementById('taskModalSub');
+  const confirmLabel = document.getElementById('confirmAddLabel');
+  let editingTaskId = null;
+
+  function openAddModal(){
+    editingTaskId = null;
+    modalTitle.textContent = 'New Video Task';
+    modalSub.textContent = 'Enter the video title. The full Sat–Fri checklist is generated automatically.';
+    confirmLabel.textContent = 'Create Task';
+    input.value = '';
+    overlay.classList.add('open');
+    setTimeout(() => input.focus(), 50);
+  }
+  function openEditModal(id){
+    const t = tasks.find(x => x.id === id);
+    if(!t) return;
+    editingTaskId = id;
+    modalTitle.textContent = 'Rename Video Task';
+    modalSub.textContent = 'Update the video title. Checklist progress stays unchanged.';
+    confirmLabel.textContent = 'Save Changes';
+    input.value = t.title;
+    overlay.classList.add('open');
+    setTimeout(() => { input.focus(); input.select(); }, 50);
+  }
+  function closeModal(){ overlay.classList.remove('open'); editingTaskId = null; }
+
+  document.getElementById('addTaskBtn').addEventListener('click', openAddModal);
+  document.getElementById('cancelModal').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => { if(e.target === overlay) closeModal(); });
+  document.getElementById('confirmAdd').addEventListener('click', submitTaskModal);
+  input.addEventListener('keydown', (e) => { if(e.key === 'Enter') submitTaskModal(); if(e.key === 'Escape') closeModal(); });
+
+  function submitTaskModal(){
+    const val = input.value.trim();
+    if(!val){ input.focus(); return; }
+    if(editingTaskId){ editTaskTitle(editingTaskId, val); }
+    else{ addTask(val); }
+    closeModal();
+  }
+
+  // ---------- task select change ----------
+  document.getElementById('taskSelect').addEventListener('change', (e) => {
+    selectedId = e.target.value;
+    saveSelected();
+    renderAll();
+  });
+
+  // ---------- GitHub sync ----------
+  const GH_CONFIG_KEY = 'wcs_gh_config';
+  const GH_SHA_KEY = 'wcs_gh_sha';
+  let ghPushTimer = null;
+  let ghSyncing = false;
+
+  function utf8ToBase64(str){ return btoa(unescape(encodeURIComponent(str))); }
+  function base64ToUtf8(str){ return decodeURIComponent(escape(atob(str))); }
+
+  function ghConfig(){
+    try{ return JSON.parse(localStorage.getItem(GH_CONFIG_KEY)) || null; }
+    catch(e){ return null; }
+  }
+  function saveGhConfig(cfg){ localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(cfg)); }
+  function clearGhConfig(){ localStorage.removeItem(GH_CONFIG_KEY); localStorage.removeItem(GH_SHA_KEY); }
+  function getGhSha(){ return localStorage.getItem(GH_SHA_KEY) || null; }
+  function setGhSha(sha){ if(sha) localStorage.setItem(GH_SHA_KEY, sha); else localStorage.removeItem(GH_SHA_KEY); }
+
+  function ghUrl(cfg){
+    return `https://api.github.com/repos/${cfg.username}/${cfg.repo}/contents/${encodeURIComponent(cfg.filename)}`;
+  }
+  function ghHeaders(cfg){
+    return {
+      'Authorization': `Bearer ${cfg.token}`,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28'
+    };
+  }
+
+  function updateSyncStatus(state, text){
+    const pill = document.getElementById('syncStatus');
+    const label = document.getElementById('syncStatusText');
+    pill.className = 'sync-pill ' + state;
+    label.textContent = text;
+  }
+
+  function refreshSyncPillFromConfig(){
+    const cfg = ghConfig();
+    if(!cfg){ updateSyncStatus('offline', 'Offline'); return; }
+    updateSyncStatus('synced', 'Synced');
+  }
+
+  // Pull remote file. Treats 200 and 404 both as valid states.
+  async function ghPull(cfg){
+    const res = await fetch(ghUrl(cfg), { headers: ghHeaders(cfg) });
+    if(res.status === 200){
+      const data = await res.json();
+      setGhSha(data.sha);
+      const decoded = base64ToUtf8(data.content.replace(/\n/g, ''));
+      const parsed = JSON.parse(decoded);
+      return { exists:true, tasks: parsed.tasks || [] };
+    }
+    if(res.status === 404){
+      setGhSha(null);
+      return { exists:false, tasks: [] };
+    }
+    const errBody = await res.json().catch(() => ({}));
+    throw new Error(errBody.message || `GitHub error (${res.status})`);
+  }
+
+  // Push local tasks to GitHub, with one retry on 409 using a refreshed SHA.
+  async function ghPush(retry){
+    const cfg = ghConfig();
+    if(!cfg) return;
+    const body = {
+      message: `Update weekly content studio data — ${new Date().toISOString()}`,
+      content: utf8ToBase64(JSON.stringify({ tasks, updatedAt: new Date().toISOString() }, null, 2))
+    };
+    const sha = getGhSha();
+    if(sha) body.sha = sha;
+
+    const res = await fetch(ghUrl(cfg), {
+      method: 'PUT',
+      headers: { ...ghHeaders(cfg), 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+
+    if(res.status === 200 || res.status === 201){
+      const data = await res.json();
+      setGhSha(data.content.sha);
+      return true;
+    }
+    if(res.status === 409 && !retry){
+      const fresh = await ghPull(cfg);
+      return ghPush(true);
+    }
+    const errBody = await res.json().catch(() => ({}));
+    throw new Error(errBody.message || `GitHub error (${res.status})`);
+  }
+
+  function queueGithubPush(){
+    const cfg = ghConfig();
+    if(!cfg) return;
+    clearTimeout(ghPushTimer);
+    updateSyncStatus('syncing', 'Syncing…');
+    ghPushTimer = setTimeout(async () => {
+      try{
+        ghSyncing = true;
+        await ghPush(false);
+        updateSyncStatus('synced', 'Synced');
+      }catch(e){
+        updateSyncStatus('error', 'Sync failed');
+        console.error('GitHub sync error:', e);
+      }finally{
+        ghSyncing = false;
+      }
+    }, 900);
+  }
+
+  async function connectGithub(){
+    const username = document.getElementById('ghUsername').value.trim();
+    const repo = document.getElementById('ghRepo').value.trim();
+    const filename = document.getElementById('ghFilename').value.trim() || 'weekly-content-studio-data.json';
+    const token = document.getElementById('ghToken').value.trim();
+
+    if(!username || !repo || !token){
+      alert('Please fill in username, repository, and token.');
+      return;
+    }
+    const cfg = { username, repo, filename, token };
+    const btn = document.getElementById('connectGithubBtn');
+    const originalHtml = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connecting…';
+    btn.disabled = true;
+    updateSyncStatus('syncing', 'Syncing…');
+
+    try{
+      const result = await ghPull(cfg);
+      saveGhConfig(cfg);
+      if(result.exists && result.tasks.length){
+        // Merge: prefer remote as source of truth on first connect
+        tasks = result.tasks;
+        saveTasks();
+        selectedId = tasks.length ? tasks[0].id : null;
+        saveSelected();
+      }else{
+        // No remote file yet — push current local data to create it
+        await ghPush(false);
+      }
+      renderAll();
+      updateSyncStatus('synced', 'Synced');
+      showGithubConnectedState(cfg);
+    }catch(e){
+      updateSyncStatus('error', 'Connection failed');
+      alert('Could not connect: ' + e.message);
+    }finally{
+      btn.innerHTML = originalHtml;
+      btn.disabled = false;
+    }
+  }
+
+  function disconnectGithub(){
+    clearGhConfig();
+    updateSyncStatus('offline', 'Offline');
+    showGithubConnectedState(null);
+  }
+
+  function showGithubConnectedState(cfg){
+    const box = document.getElementById('ghConnectedBox');
+    if(cfg){
+      box.style.display = 'flex';
+      document.getElementById('ghConnectedRepo').textContent = `${cfg.username}/${cfg.repo}`;
+      document.getElementById('ghUsername').value = cfg.username;
+      document.getElementById('ghRepo').value = cfg.repo;
+      document.getElementById('ghFilename').value = cfg.filename;
+    }else{
+      box.style.display = 'none';
+    }
+  }
+
+  const ghOverlay = document.getElementById('githubOverlay');
+  document.getElementById('syncStatus').addEventListener('click', () => {
+    showGithubConnectedState(ghConfig());
+    ghOverlay.classList.add('open');
+  });
+  document.getElementById('cancelGithub').addEventListener('click', () => ghOverlay.classList.remove('open'));
+  ghOverlay.addEventListener('click', (e) => { if(e.target === ghOverlay) ghOverlay.classList.remove('open'); });
+  document.getElementById('connectGithubBtn').addEventListener('click', connectGithub);
+  document.getElementById('ghDisconnectBtn').addEventListener('click', disconnectGithub);
+
+  async function ghAutoLoadOnStartup(){
+    const cfg = ghConfig();
+    if(!cfg) return;
+    updateSyncStatus('syncing', 'Syncing…');
+    try{
+      const result = await ghPull(cfg);
+      if(result.exists){
+        tasks = result.tasks;
+        saveTasks();
+        if(!selectedId || !tasks.find(t => t.id === selectedId)){
+          selectedId = tasks.length ? tasks[0].id : null;
+          saveSelected();
+        }
+        renderAll();
+      }
+      updateSyncStatus('synced', 'Synced');
+    }catch(e){
+      updateSyncStatus('error', 'Sync failed');
+      console.error('GitHub auto-load error:', e);
+    }
+  }
+
+  // ---------- init ----------
+  initTheme();
+  loadTasks();
+  renderAll();
+  refreshSyncPillFromConfig();
+  ghAutoLoadOnStartup();
+})();
+</script>
+</body>
+</html>
