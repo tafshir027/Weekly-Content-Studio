@@ -26,15 +26,15 @@
           "completedAt": null
         },
         "thu": {
-          "done": true,
-          "completedAt": "2026-07-17T10:48:59.282Z"
+          "done": false,
+          "completedAt": null
         },
         "fri": {
-          "done": true,
-          "completedAt": "2026-07-17T10:49:02.882Z"
+          "done": false,
+          "completedAt": null
         }
       }
     }
   ],
-  "updatedAt": "2026-07-18T07:12:41.948Z"
+  "updatedAt": "2026-07-18T07:12:43.709Z"
 }
