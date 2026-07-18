@@ -6,24 +6,24 @@
       "createdAt": "2026-07-17T06:43:26.290Z",
       "days": {
         "sat": {
-          "done": true,
-          "completedAt": "2026-07-17T10:48:31.987Z"
+          "done": false,
+          "completedAt": null
         },
         "sun": {
-          "done": true,
-          "completedAt": "2026-07-17T10:48:43.451Z"
+          "done": false,
+          "completedAt": null
         },
         "mon": {
-          "done": true,
-          "completedAt": "2026-07-17T10:48:44.706Z"
+          "done": false,
+          "completedAt": null
         },
         "tue": {
-          "done": true,
-          "completedAt": "2026-07-17T10:48:45.818Z"
+          "done": false,
+          "completedAt": null
         },
         "wed": {
-          "done": true,
-          "completedAt": "2026-07-17T10:48:51.875Z"
+          "done": false,
+          "completedAt": null
         },
         "thu": {
           "done": true,
@@ -36,5 +36,5 @@
       }
     }
   ],
-  "updatedAt": "2026-07-17T10:49:03.796Z"
+  "updatedAt": "2026-07-18T07:12:41.948Z"
 }
